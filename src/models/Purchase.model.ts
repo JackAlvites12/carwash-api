@@ -3,6 +3,14 @@ import { PurchaseInterface } from "../interfaces/purchase.interface";
 
 
 const purchaseSchema = new Schema<PurchaseInterface>({
+
+    providerDetails: {
+        name: { type: String, required: true },
+        ruc: { type: Number, required: true },
+        address: { type: String, required: true },
+        nroBoleta: { type: String, required: true },
+        phone: { type: Number, required: true },
+    },
     
     productsPurchased: [
         {

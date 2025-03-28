@@ -7,6 +7,7 @@ const userSchema = new Schema<UserInterface>({
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
+    rol: { type: [String], enum: ['cliente', 'recepcionista', 'superAdmin'], default: ['cliente'] }
 
 })
 

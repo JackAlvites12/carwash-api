@@ -6,4 +6,5 @@ export interface CatalogInterface {
     assignedStaff: Types.ObjectId[]
     assignedProducts: Types.ObjectId[],
     price: number,
+    status: boolean,
 }

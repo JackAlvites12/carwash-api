@@ -14,8 +14,9 @@ const catalogSchema = new Schema<CatalogInterface>({
             size: { type: String, enum: ['ml', 'L'], default: '' },
         }
     ],
-    price: { type: Number, required: true }
+    price: { type: Number, required: true },
+    status: { type: Boolean, default: true },
 
-})
+}, { timestamps: true })
 
 export const Catalog = model('Catalog', catalogSchema )

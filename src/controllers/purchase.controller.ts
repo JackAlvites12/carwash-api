@@ -50,6 +50,10 @@ export const createPurchase = async ( req: Request, res: Response ) => {
 
             currentProduct.stock += product.quantity
 
+            if( currentProduct.stock > 3 ){
+                currentProduct.status = true
+            }
+            
             await currentProduct.save()
 
         }

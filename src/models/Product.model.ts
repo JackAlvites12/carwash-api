@@ -2,7 +2,6 @@ import { model, Schema } from "mongoose";
 import { ProductInterface } from "../interfaces/product.interface";
 
 const productSchema = new Schema<ProductInterface>({
-    
     name: { type: String, required: true },
     description: { type: String, required: true },
     brand: { type: String, required: true },
@@ -12,7 +11,8 @@ const productSchema = new Schema<ProductInterface>({
     stock: { type: Number, required: true },
     img_url: { type: String, required: true },
     quantityOriginal: { type: Number, default: 0 },
-    sizeOriginal: { type: String, enum: ['ml', 'L', 'N/A'], default: '' }
+    sizeOriginal: { type: String, enum: ['ml', 'L', 'N/A'], default: '' },
+    status: { type: Boolean, default: false },
 })
 
 export const Product = model('Product', productSchema )

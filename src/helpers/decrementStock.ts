@@ -86,6 +86,11 @@ export const restarStock = async ( serviceId: string, productoId: string, cantid
         producto.size = nuevaUnidad        //-> Y aqui 'L'
     }
 
+        // 🚨 Verificar si el stock es 3 o menos para deshabilitar el producto
+    if ( producto.stock <= 3 ) {
+        producto.status = false;
+    }
+
     await producto.save() 
             
     const newMovement = new Movement({ 

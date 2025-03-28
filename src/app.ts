@@ -11,6 +11,8 @@ import { serviceRouter } from "./routes/service.routes"
 import { purchaseRouter } from "./routes/purchase.routes"
 import { movementRouter } from "./routes/movement.routes"
 import { saleRouter } from "./routes/sale.routes"
+import { adminRouter } from "./routes/admin.routes"
+import { dashboardRouter } from "./routes/dashboard.routes"
 
 ( async () => {
 
@@ -24,7 +26,9 @@ import { saleRouter } from "./routes/sale.routes"
 
     await startServer()
     
+    app.use( '/api/dashboard', dashboardRouter )
     app.use( '/api/customers', customerRouter )
+    app.use( '/api/admin', adminRouter )
     app.use( '/api/user', userRouter )
     app.use( '/api/products', productRouter )
     app.use( '/api/employees', employeeRouter )

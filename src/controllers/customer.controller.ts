@@ -5,8 +5,16 @@ import { Customer } from "../models/Customer.model";
 export const getAllCustomers = async ( req: Request, res: Response ) => {
 
     try {
+
+        const { q, _limit } = req.query;
+
+        let filter = {}
+
+        if ( q ) {
+            filter = { fullname: { $regex: q, $options: "i" } } // Búsqueda insensible a mayúsculas/minúsculas
+        }
         
-        const customers = await Customer.find()
+        const customers = await Customer.find( filter )
 
         if( !customers ) return res.json([])
 

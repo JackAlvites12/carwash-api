@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Product } from "../models/Product.model";
 import { deleteFile, postUpLoadFile } from "../helpers/cloudinary";
-import mongoose from "mongoose";
 
 
 export const getAllProducts = async ( req: Request, res: Response ) => {
@@ -9,14 +8,23 @@ export const getAllProducts = async ( req: Request, res: Response ) => {
     try {
 
         // Capturar el query y el límite desde la URL
-        const { q, _limit } = req.query;
+        const { q, _limit, ...filters } = req.query;
 
         // Crear un filtro basado en el query
-        let filter = {}
+        let filter: Record<string, any> = {}
+
         if ( q ) {
-            filter = {
-                name: { $regex: q, $options: "i" } // Búsqueda insensible a mayúsculas/minúsculas
-            }
+            filter = { name: { $regex: q, $options: "i" } } // Búsqueda insensible a mayúsculas/minúsculas
+        }
+
+        if ( filters ) {
+            Object.keys( filters ).forEach( key => {
+                if (filters[key] === "!N/A") {
+                    filter[key] = { $ne: "N/A" }; // Excluye "N/A"
+                } else {
+                    filter[key] = filters[key]; // Aplica otros filtros normalmente
+                }
+            })
         }
 
         // Convertir _limit a número (si existe, de lo contrario usar 10)
@@ -115,7 +123,7 @@ export const updateProduct = async ( req: Request, res: Response ) => {
             return res.status( 200 ).json( productUpdated )
         }
 
-
+        
         const productUpdated = await Product.findByIdAndUpdate( productId, { ...body }, { new: true })
 
         return res.status( 200 ).json( productUpdated )
@@ -128,36 +136,3 @@ export const updateProduct = async ( req: Request, res: Response ) => {
     }
 
 }
-
-export const deleteProduct = async ( req: Request, res: Response ) => {
-
-    const { productId } = req.params
-
-    try {
-        if (!mongoose.Types.ObjectId.isValid( productId )) {
-            return res.status( 404 ).json({ message: `El ID ${ productId } no es válido.` })
-        }
-
-        const product = await Product.findByIdAndDelete( productId )
-
-        // Si el producto no existe, enviar un error 404
-        if ( !product ) {
-            return res.status( 404 ).json({ message: `El producto con ID ${ productId } no existe.` })
-        }
-
-        // Extraer el publicId de la URL de la imagen
-        const publicId = product.img_url.split('/').pop()?.split('.')[0];
-
-        if ( publicId ) {
-            await deleteFile( publicId );
-        }
-
-        return res.status( 200 ).json({ message: "Producto eliminado correctamente." });
-
-    } catch (error) {
-        
-        return res.status( 500 ).json({ error: 'Ocurrió un error en el servidor, inténtelo más tarde.' })
-
-    }
-
-} 

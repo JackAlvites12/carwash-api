@@ -4,6 +4,7 @@ export interface EmployeeInterface {
     rol: Rol,
     country: string,
     phone: number,
+    status: boolean,
     createdAt: Date,
 
 }

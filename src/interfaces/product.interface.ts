@@ -9,6 +9,7 @@ export interface ProductInterface {
     img_url: string,
     quantityOriginal: number,
     sizeOriginal?: Size,
+    status: boolean,
 }
 
 export type Size = 'ml' | 'L' | 'N/A' | 'kg' | 'g'

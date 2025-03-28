@@ -7,6 +7,7 @@ const employeeSchema = new Schema<EmployeeInterface>({
     rol: { type: String, enum: ['Especialista en Llantas', 'Lavador general', 'Aspirador Interior', 'Encerador y Pulidor', 'Supervisor', 'Recepcionista'], required: true },
     country: { type: String, required: true },
     phone: { type: Number, required: true },
+    status: { type: Boolean, default: true },
     createdAt: { type: Date, default: () => new Date() },
 })
 
