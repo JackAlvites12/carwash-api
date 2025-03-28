@@ -17,7 +17,7 @@ import { dashboardRouter } from "./routes/dashboard.routes"
 ( async () => {
 
     app.use( cors({
-        origin: ['http://localhost:3000', 'http://localhost:4200'],
+        origin: ['http://localhost:4200','https://carwash-app-zeta.vercel.app'],
         credentials: true,
     }))
     app.use( cookieParser() )

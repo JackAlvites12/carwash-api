@@ -25,8 +25,8 @@ export const login = async ( req: Request, res: Response ) => {
         const token = jwt.sign({ _id: user.id }, process.env.TOKEN_SECRET_KEY as string, { expiresIn: '24h' })
 
         // Guardamos en cookies
-        res.cookie('userId', user._id.toString(), { httpOnly: true, maxAge: 60 * 60 * 24 * 1000 })
-        res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 24 * 1000 })
+        res.cookie('userId', user._id.toString(), { httpOnly: true, maxAge: 60 * 60 * 24 * 1000, sameSite: 'none', secure: true })
+        res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 24 * 1000, sameSite: 'none', secure: true })
 
         // Mandamos el cuerpo del usuario que queremos devolver: 
         const respUser = {
@@ -73,7 +73,7 @@ export const signUp = async ( req: Request, res: Response ) => {
         const token = jwt.sign({ _id: user.id }, process.env.TOKEN_SECRET_KEY as string, { expiresIn: '24h' })
 
         // Almacenamos el token en las cookies 
-        res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 24 * 1000 })
+        res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 24 * 1000, sameSite: 'none', secure: true})
 
         
         return res.status( 201 ).json({ message: 'Usuario creado correctamente' })
@@ -90,12 +90,15 @@ export const logout = async ( req: Request, res: Response ) => {
 
     try {
 
-        res.clearCookie('token')
+        res.clearCookie('token', { sameSite: 'none', secure: true })
+        res.clearCookie('userId',  { sameSite: 'none', secure: true })
 
         return res.status( 200 ).json({ message: 'Sesión cerrada correctamente'})
         
     } catch ( error ) {
 
+        console.log( error );
+        
         return res.status( 500 ).json( error )
         
     }
@@ -192,8 +195,8 @@ export const loginAdmin = async ( req: Request, res: Response ) => {
         const token = jwt.sign({ _id: user.id }, process.env.TOKEN_SECRET_KEY as string, { expiresIn: '24h' })
 
         // Guardamos en cookies
-        res.cookie('userId', user._id.toString(), { httpOnly: true, maxAge: 60 * 60 * 24 * 1000 })
-        res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 24 * 1000 })
+        res.cookie('userId', user._id.toString(), { httpOnly: true, maxAge: 60 * 60 * 24 * 1000, sameSite: 'none', secure: true })
+        res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 24 * 1000, sameSite: 'none', secure: true})
 
         // Mandamos el cuerpo del usuario que queremos devolver: 
         const respUser = {
